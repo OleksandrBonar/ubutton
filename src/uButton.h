@@ -9,6 +9,8 @@ class uButton
 {
 	private:
 		unsigned short pinNum;
+		unsigned short pinMode;
+	
 		unsigned long debounceTime;
 		unsigned long count;
 		int countMode;
@@ -18,6 +20,10 @@ class uButton
 		int lastFlickerableState;
 
 		unsigned long lastDebounceTime;
+
+	protected:
+		unsigned short getOnValue(void);
+		unsigned short getOffValue(void);
 
 	public:
 		uButton(unsigned short pin);
