@@ -8,8 +8,8 @@
 class uButton
 {
 	private:
-		unsigned short pinNum;
-		unsigned short pinMode;
+		int pinNum;
+		int pinMode;
 	
 		unsigned long debounceTime;
 		unsigned long count;
@@ -22,12 +22,12 @@ class uButton
 		unsigned long lastDebounceTime;
 
 	protected:
-		unsigned short getOnValue(void);
-		unsigned short getOffValue(void);
+		int getOnValue(void);
+		int getOffValue(void);
 
 	public:
-		uButton(unsigned short pin);
-		uButton(unsigned short pin, int mode);
+		uButton(int pin);
+		uButton(int pin, int mode);
 
 		void setDebounceTime(unsigned long time);
 
