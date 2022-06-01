@@ -11,8 +11,11 @@ uButton::uButton(int pin, int mode)
 	count = 0;
 	countMode = COUNT_FALLING;
 
-	pinMode(pinNum, pinMode);
+	if (pinNum > 0) {
+		pinMode(pinNum, pinMode);
+	}
 
+	virtualState = getOffValue();
 	previousSteadyState = getState();
 	lastSteadyState = previousSteadyState;
 	lastFlickerableState = previousSteadyState;
