@@ -34,6 +34,9 @@ class uButton
 		int getState(void);
 		int getStateRaw(void);
 
+		bool isOn(void);
+		bool isOff(void);
+
 		bool isPressed(void);
 		bool isReleased(void);
 		bool isChanged(void);
