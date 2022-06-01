@@ -13,7 +13,7 @@ uButton::uButton(int pin, int mode)
 
 	pinMode(pinNum, pinMode);
 
-	previousSteadyState = digitalRead(btnPin);
+	previousSteadyState = getState();
 	lastSteadyState = previousSteadyState;
 	lastFlickerableState = previousSteadyState;
 
@@ -37,37 +37,42 @@ void uButton::setDebounceTime(unsigned long time)
 
 int uButton::getState(void)
 {
+	return digitalRead(pinNum);
+}
+
+int uButton::getStateLast(void)
+{
 	return lastSteadyState;
 }
 
-int uButton::getStateRaw(void)
+int uButton::getStatePrevious(void)
 {
-	return digitalRead(pinNum);
+	return previousSteadyState;
 }
 
 bool uButton::isOn(void)
 {
-	return getState() == getOnValue();
+	return getStateLast() == getOnValue();
 }
 
 bool uButton::isOff(void)
 {
-	return getState() == getOffValue();
+	return getStateLast() == getOffValue();
 }
 
 bool uButton::isPressed(void)
 {
-	return previousSteadyState == getOffValue() && lastSteadyState == getOnValue();
+	return getStatePrevious() == getOffValue() && getStateLast() == getOnValue();
 }
 
 bool uButton::isReleased(void)
 {
-	return previousSteadyState == getOnValue() && lastSteadyState == getOffValue();
+	return getStatePrevious() == getOnValue() && getStateLast() == getOffValue();
 }
 
 bool uButton::isChanged(void)
 {
-  return previousSteadyState != lastSteadyState;
+  return getStatePrevious() != getStateLast();
 }
 
 void uButton::setCountMode(int mode)
@@ -87,7 +92,7 @@ void uButton::resetCount(void)
 
 void uButton::loop(void)
 {
-	int currentState = digitalRead(pinNum);
+	int currentState = getState();
 	unsigned long currentTime = millis();
 
 	// If the switch/button changed, due to noise or pressing:
