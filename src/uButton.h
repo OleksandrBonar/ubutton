@@ -15,6 +15,8 @@ class uButton
 		unsigned long count;
 		int countMode;
 
+		int virtualState;
+
 		int previousSteadyState;
 		int lastSteadyState;
 		int lastFlickerableState;
@@ -26,6 +28,9 @@ class uButton
 		uButton(int pin, int mode);
 
 		void setDebounceTime(unsigned long time);
+
+		void setOn(void);
+		void setOff(void);
 
 		int getState(void);
 		int getStateLast(void);
