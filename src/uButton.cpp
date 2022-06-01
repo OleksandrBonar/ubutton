@@ -45,6 +45,16 @@ int uButton::getStateRaw(void)
 	return digitalRead(pinNum);
 }
 
+bool uButton::isOn(void)
+{
+	return getState() == getOnValue();
+}
+
+bool uButton::isOff(void)
+{
+	return getState() == getOffValue();
+}
+
 bool uButton::isPressed(void)
 {
 	return previousSteadyState == getOffValue() && lastSteadyState == getOnValue();
