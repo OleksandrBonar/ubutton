@@ -31,6 +31,7 @@ class uButton
 
 		void setOn(void);
 		void setOff(void);
+		void setState(int state);
 
 		int getState(void);
 		int getStateLast(void);
