@@ -21,10 +21,6 @@ class uButton
 
 		unsigned long lastDebounceTime;
 
-	protected:
-		int getOnValue(void);
-		int getOffValue(void);
-
 	public:
 		uButton(int pin);
 		uButton(int pin, int mode);
@@ -32,7 +28,11 @@ class uButton
 		void setDebounceTime(unsigned long time);
 
 		int getState(void);
-		int getStateRaw(void);
+		int getStateLast(void);
+		int getStatePrevious(void);
+
+		int getOnValue(void);
+		int getOffValue(void);
 
 		bool isOn(void);
 		bool isOff(void);
