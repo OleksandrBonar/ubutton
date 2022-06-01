@@ -35,9 +35,30 @@ void uButton::setDebounceTime(unsigned long time)
 	debounceTime = time;
 }
 
+void uButton::setOn(void)
+{
+	setState(getOnValue());
+}
+
+void uButton::setOff(void)
+{
+	setState(getOffValue());
+}
+
+void uButton::setState(int state)
+{
+	if (pinNum > 0) {
+		if (pinMode == OUTPUT) {
+			// digitalWrite(pinNum, state);
+		}
+	} else {
+		virtualState = state;
+	}
+}
+
 int uButton::getState(void)
 {
-	return digitalRead(pinNum);
+	return pinNum > 0 ? digitalRead(pinNum) : virtualState;
 }
 
 int uButton::getStateLast(void)
