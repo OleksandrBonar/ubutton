@@ -8,7 +8,7 @@
 class uButton
 {
 	private:
-		int pinNum;
+		unsigned short pinNum;
 		unsigned long debounceTime;
 		unsigned long count;
 		int countMode;
@@ -20,8 +20,8 @@ class uButton
 		unsigned long lastDebounceTime;
 
 	public:
-		uButton(int pinNum);
-		uButton(int pinNum, int mode);
+		uButton(unsigned short pin);
+		uButton(unsigned short pin, int mode);
 
 		void setDebounceTime(unsigned long time);
 
@@ -30,6 +30,7 @@ class uButton
 
 		bool isPressed(void);
 		bool isReleased(void);
+		bool isChanged(void);
 
 		void setCountMode(int mode);
 		unsigned long getCount(void);
