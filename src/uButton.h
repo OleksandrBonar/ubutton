@@ -1,6 +1,8 @@
 #ifndef UBUTTON_H
 #define UBUTTON_H
 
+#include <Arduino.h>
+
 #define COUNT_FALLING 0
 #define COUNT_RISING  1
 #define COUNT_BOTH    2
@@ -9,7 +11,7 @@ class uButton
 {
 	private:
 		int pinNum;
-		int pinMode;
+		int pinMod;
 	
 		unsigned long debounceTime;
 		unsigned long count;
@@ -25,7 +27,9 @@ class uButton
 
 	public:
 		uButton(int pin);
-		uButton(int pin, int mode);
+		uButton(int pin, int mode, bool is_on);
+		
+		void begin(void);
 
 		void setDebounceTime(unsigned long time);
 
