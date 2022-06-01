@@ -1,8 +1,8 @@
 #include <uButton.h>
 
-uButton::uButton(int pin): uButton(pin, INPUT_PULLUP) {}
+uButton::uButton(int pin): uButton(pin, INPUT_PULLUP, false) {}
 
-uButton::uButton(int pin, int mode)
+uButton::uButton(int pin, int mode, bool is_on)
 {
 	pinNum = pin;
 	pinMode = mode;
@@ -11,11 +11,11 @@ uButton::uButton(int pin, int mode)
 	count = 0;
 	countMode = COUNT_FALLING;
 
-	if (pinNum > 0) {
+	if (pinNum >= 0) {
 		pinMode(pinNum, pinMode);
 	}
 
-	virtualState = getOffValue();
+	virtualState = is_on ? getOnValue() : getOffValue();
 	previousSteadyState = getState();
 	lastSteadyState = previousSteadyState;
 	lastFlickerableState = previousSteadyState;
@@ -50,9 +50,10 @@ void uButton::setOff(void)
 
 void uButton::setState(int state)
 {
-	if (pinNum > 0) {
+	if (pinNum >= 0) {
 		if (pinMode == OUTPUT) {
-			// digitalWrite(pinNum, state);
+			virtualState = state;
+			digitalWrite(pinNum, state);
 		}
 	} else {
 		virtualState = state;
@@ -61,7 +62,7 @@ void uButton::setState(int state)
 
 int uButton::getState(void)
 {
-	return pinNum > 0 ? digitalRead(pinNum) : virtualState;
+	return pinNum >= 0 && pinMode != OUTPUT ? digitalRead(pinNum) : virtualState;
 }
 
 int uButton::getStateLast(void)
