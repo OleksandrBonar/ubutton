@@ -5,17 +5,21 @@ uButton::uButton(int pin): uButton(pin, INPUT_PULLUP, false) {}
 uButton::uButton(int pin, int mode, bool is_on)
 {
 	pinNum = pin;
-	pinMode = mode;
+	pinMod = mode;
 
+	virtualState = is_on ? getOnValue() : getOffValue();
+}
+
+void uButton::begin(void)
+{
 	debounceTime = 0;
 	count = 0;
 	countMode = COUNT_FALLING;
 
 	if (pinNum >= 0) {
-		pinMode(pinNum, pinMode);
+		pinMode(pinNum, pinMod);
 	}
 
-	virtualState = is_on ? getOnValue() : getOffValue();
 	previousSteadyState = getState();
 	lastSteadyState = previousSteadyState;
 	lastFlickerableState = previousSteadyState;
@@ -25,12 +29,12 @@ uButton::uButton(int pin, int mode, bool is_on)
 
 int uButton::getOnValue(void)
 {
-	return pinMode == INPUT_PULLUP ? LOW : HIGH;
+	return pinMod == INPUT ? HIGH : LOW;
 }
 
 int uButton::getOffValue(void)
 {
-	return pinMode == INPUT_PULLUP ? HIGH : LOW;
+	return pinMod == INPUT ? LOW : HIGH;
 }
 
 void uButton::setDebounceTime(unsigned long time)
@@ -51,7 +55,7 @@ void uButton::setOff(void)
 void uButton::setState(int state)
 {
 	if (pinNum >= 0) {
-		if (pinMode == OUTPUT) {
+		if (pinMod == OUTPUT) {
 			virtualState = state;
 			digitalWrite(pinNum, state);
 		}
@@ -62,7 +66,7 @@ void uButton::setState(int state)
 
 int uButton::getState(void)
 {
-	return pinNum >= 0 && pinMode != OUTPUT ? digitalRead(pinNum) : virtualState;
+	return pinNum >= 0 && pinMod != OUTPUT ? digitalRead(pinNum) : virtualState;
 }
 
 int uButton::getStateLast(void)
