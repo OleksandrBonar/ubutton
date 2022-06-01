@@ -1,21 +1,33 @@
 #include <uButton.h>
 
-uButton::uButton(unsigned short pin): uButton(pin, INPUT_PULLUP) {}
+uButton::uButton(int pin): uButton(pin, INPUT_PULLUP) {}
 
-uButton::uButton(unsigned short pin, int mode)
+uButton::uButton(int pin, int mode)
 {
 	pinNum = pin;
+	pinMode = mode;
+
 	debounceTime = 0;
 	count = 0;
 	countMode = COUNT_FALLING;
 
-	pinMode(pinNum, mode);
+	pinMode(pinNum, pinMode);
 
 	previousSteadyState = digitalRead(btnPin);
 	lastSteadyState = previousSteadyState;
 	lastFlickerableState = previousSteadyState;
 
 	lastDebounceTime = 0;
+}
+
+int uButton::getOnValue(void)
+{
+	return pinMode == INPUT_PULLUP ? LOW : HIGH;
+}
+
+int uButton::getOffValue(void)
+{
+	return pinMode == INPUT_PULLUP ? HIGH : LOW;
 }
 
 void uButton::setDebounceTime(unsigned long time)
@@ -35,12 +47,12 @@ int uButton::getStateRaw(void)
 
 bool uButton::isPressed(void)
 {
-  return previousSteadyState == HIGH && lastSteadyState == LOW;
+	return previousSteadyState == getOffValue() && lastSteadyState == getOnValue();
 }
 
 bool uButton::isReleased(void)
 {
-	return previousSteadyState == LOW && lastSteadyState == HIGH;
+	return previousSteadyState == getOnValue() && lastSteadyState == getOffValue();
 }
 
 bool uButton::isChanged(void)
@@ -88,14 +100,14 @@ void uButton::loop(void)
 	if (previousSteadyState != lastSteadyState) {
 		if (countMode == COUNT_BOTH) {
 			count++;
-    } else if (countMode == COUNT_FALLING) {
-			if (previousSteadyState == HIGH && lastSteadyState == LOW) {
+		} else if (countMode == COUNT_FALLING) {
+			if (previousSteadyState == getOffValue() && lastSteadyState == getOnValue()) {
 				count++;
-      }
+			}
 		} else if (countMode == COUNT_RISING) {
-			if (previousSteadyState == LOW && lastSteadyState == HIGH) {
+			if (previousSteadyState == getOnValue() && lastSteadyState == getOffValue()) {
 				count++;
-      }
+			}
 		}
 	}
 }
