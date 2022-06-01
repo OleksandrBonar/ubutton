@@ -1,4 +1,4 @@
-#include <ubutton.h>
+#include <uButton.h>
 
 uButton::uButton(unsigned short pin): uButton(pin, INPUT_PULLUP) {}
 
