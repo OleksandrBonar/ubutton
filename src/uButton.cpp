@@ -67,7 +67,7 @@ bool uButton::isReleased(void)
 
 bool uButton::isChanged(void)
 {
-  return isPressed() || isReleased();
+  return previousSteadyState != lastSteadyState;
 }
 
 void uButton::setCountMode(int mode)
@@ -107,15 +107,15 @@ void uButton::loop(void)
 		lastSteadyState = currentState;
 	}
 
-	if (previousSteadyState != lastSteadyState) {
+	if (isChanged()) {
 		if (countMode == COUNT_BOTH) {
 			count++;
 		} else if (countMode == COUNT_FALLING) {
-			if (previousSteadyState == getOffValue() && lastSteadyState == getOnValue()) {
+			if (isPressed()) {
 				count++;
 			}
 		} else if (countMode == COUNT_RISING) {
-			if (previousSteadyState == getOnValue() && lastSteadyState == getOffValue()) {
+			if (isReleased()) {
 				count++;
 			}
 		}
