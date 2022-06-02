@@ -1,16 +1,14 @@
 #include <uButton.h>
 
-uButton::uButton(int pin): uButton(pin, INPUT_PULLUP, false) {}
+uButton::uButton(int pin): uButton(pin, INPUT_PULLUP) {}
 
-uButton::uButton(int pin, int mode, bool is_on)
+uButton::uButton(int pin, int mode)
 {
 	pinNum = pin;
 	pinMod = mode;
-
-	virtualState = is_on ? getOnValue() : getOffValue();
 }
 
-void uButton::begin(void)
+void uButton::begin(bool is_on)
 {
 	debounceTime = 0;
 	count = 0;
@@ -19,6 +17,8 @@ void uButton::begin(void)
 	if (pinNum >= 0) {
 		pinMode(pinNum, pinMod);
 	}
+	
+	setState(is_on ? getOnValue() : getOffValue());
 
 	previousSteadyState = getState();
 	lastSteadyState = previousSteadyState;
