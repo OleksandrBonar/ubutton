@@ -27,9 +27,9 @@ class uButton
 
 	public:
 		uButton(int pin);
-		uButton(int pin, int mode, bool is_on);
+		uButton(int pin, int mode);
 		
-		void begin(void);
+		void begin(bool is_on = false);
 
 		void setDebounceTime(unsigned long time);
 
